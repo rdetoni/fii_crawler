@@ -27,5 +27,5 @@ ssh $SSH_USER@$SSH_HOST << EOF
     # docker push your-registry-url/$IMAGE_NAME
 
     # Run your Docker container
-    docker run -d -p 7000:7000 clipboard:latest
+    docker run -d -p 7000:7000 fii_crawler:latest
 EOF

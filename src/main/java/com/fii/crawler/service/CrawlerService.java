@@ -35,15 +35,15 @@ public class CrawlerService {
                 String valueLabel = div.getNextElementSibling().getFirstChild().getNextSibling().getFirstChild().getNodeValue();
                 String value = div.getNextElementSibling().getFirstChild().getNextSibling().getFirstChild().getNodeValue();
                 if(valueLabel.equalsIgnoreCase("Último Rendimento")){
-                    lastDividend = div.getNextElementSibling().getFirstChild().getNextSibling()
-                            .getNextSibling().getNextSibling().getFirstChild().getNextSibling().getNextSibling()
-                            .getFirstChild().getNodeValue();
+                    lastDividend = div.getNextElementSibling().getFirstChild().getNextSibling().getNextSibling()
+                            .getNextSibling().getFirstChild().getNextSibling().getNextSibling().getNextSibling()
+                            .getFirstChild().getNodeValue().trim().replaceAll(",", ".");
                 }
 
-                if(value.equalsIgnoreCase("P/VP")){
+                if(value.contains("VP")){
                     pVp = div.getNextElementSibling().getFirstChild().getNextSibling().getNextSibling()
-                            .getNextSibling().getFirstChild().getFirstChild().getNodeValue()
-                            .replaceAll("\\s+","");
+                            .getNextSibling().getFirstChild().getNextSibling().getFirstChild().getNodeValue().trim()
+                            .replaceAll(",", ".");
                     break;
                 }
             }catch(NullPointerException e){
