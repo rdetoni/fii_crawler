@@ -30,6 +30,7 @@ public class CrawlerService {
         List<HtmlDivision> htmlDivisionList = page.getByXPath("//section//div//div");
         String lastDividend = null;
         String pVp = null;
+        String equityValue = null;
         for(HtmlDivision div : htmlDivisionList) {
             try{
                 String valueLabel = div.getNextElementSibling().getFirstChild().getNextSibling().getFirstChild().getNodeValue();
@@ -46,11 +47,18 @@ public class CrawlerService {
                             .replaceAll(",", ".");
                     break;
                 }
+
+                if(value.equalsIgnoreCase("Valor Patrimonial")){
+                    equityValue = div.getNextElementSibling().getFirstChild().getNextSibling().getNextSibling()
+                            .getNextSibling().getFirstChild().getNextSibling().getFirstChild().getNextSibling()
+                            .getNextSibling().getNodeValue().trim().replaceAll(",", ".");
+                    break;
+                }
             }catch(NullPointerException e){
                 System.out.println("Null pointer executing operations. Continuing loop.");
             }
         }
 
-        return new FII(code, price, lastDividend, pVp);
+        return new FII(code, price, lastDividend, pVp, equityValue);
     }
 }

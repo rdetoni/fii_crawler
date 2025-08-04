@@ -2,13 +2,16 @@
 set -x
 # Set your remote server's SSH details
 SSH_USER="admin"
-SSH_HOST="192.168.0.15"
+SSH_HOST="192.168.0.51"
 
 #Put the whole project on a tar file
 tar -zcvf fii_crawler.tar.gz fii_crawler
 
 #Send project to PI
 scp fii_crawler.tar.gz $SSH_USER@$SSH_HOST:/home/admin/docker-images
+
+# Delete local tarball after transfer
+rm fii_crawler.tar.gz
 
 # SSH into the remote server
 ssh $SSH_USER@$SSH_HOST << EOF
