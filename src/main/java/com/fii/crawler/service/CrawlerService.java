@@ -45,13 +45,15 @@ public class CrawlerService {
                     pVp = div.getNextElementSibling().getFirstChild().getNextSibling().getNextSibling()
                             .getNextSibling().getFirstChild().getNextSibling().getFirstChild().getNodeValue().trim()
                             .replaceAll(",", ".");
-                    break;
                 }
 
                 if(value.equalsIgnoreCase("Valor Patrimonial")){
                     equityValue = div.getNextElementSibling().getFirstChild().getNextSibling().getNextSibling()
                             .getNextSibling().getFirstChild().getNextSibling().getFirstChild().getNextSibling()
                             .getNextSibling().getNodeValue().trim().replaceAll(",", ".");
+                }
+
+                if(lastDividend != null && pVp != null && equityValue != null){
                     break;
                 }
             }catch(NullPointerException e){
