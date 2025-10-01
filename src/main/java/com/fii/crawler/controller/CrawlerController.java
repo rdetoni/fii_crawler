@@ -1,9 +1,11 @@
 package com.fii.crawler.controller;
 
+import com.fii.crawler.entities.BrazilianStock;
 import com.fii.crawler.entities.FII;
 import com.fii.crawler.service.CrawlerService;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,15 @@ public class CrawlerController {
     @GetMapping(path = "/getFii")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<FII> getFii(@RequestParam String code) throws IOException{
-        FII fii = this.crawlerService.getDataFromFii(code);
+        val fii = this.crawlerService.getDataFromFii(code);
         return new ResponseEntity<>(fii, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getBrazilianStockByName")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BrazilianStock> getBrazilianStockByName(@RequestParam String name) throws IOException{
+        val stock = this.crawlerService.getBrazilianStockByName(name);
+        return new ResponseEntity<>(stock, HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

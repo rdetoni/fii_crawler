@@ -1,19 +1,28 @@
 package com.fii.crawler.service;
 
+import com.fii.crawler.entities.BrazilianStock;
 import com.fii.crawler.entities.FII;
 import com.gargoylesoftware.htmlunit.Cache;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlParagraph;
+import lombok.val;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class CrawlerService {
     private static final Cache cache = new Cache();
+
+    @Value("${infomoney.url.ticker}")
+    private String ticker;
+
     public FII getDataFromFii(String code) throws IOException {
 
         String url = "https://www.fundsexplorer.com.br/funds/" + code.toUpperCase();
@@ -62,5 +71,26 @@ public class CrawlerService {
         }
 
         return new FII(code, price, lastDividend, pVp, equityValue);
+    }
+
+    public BrazilianStock getBrazilianStockByName(String name) throws IOException{
+        String url = "https://www.infomoney.com.br/cotacoes/b3/acao/" + name;
+        WebClient webClient = new WebClient();
+        webClient.getOptions().setJavaScriptEnabled(false);
+        webClient.setCache(cache);
+        HtmlPage page = webClient.getPage(url);
+
+        val brazilianStock = BrazilianStock.builder()
+                .name(name)
+                .ticker(extractString(ticker, page.getBaseURL().getPath(), 1).toUpperCase())
+                .build();
+
+        return brazilianStock;
+    }
+
+    private String extractString(String regex, String text, int groupIndex){
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+        return matcher.find() ? matcher.group(groupIndex) : "";
     }
 }
