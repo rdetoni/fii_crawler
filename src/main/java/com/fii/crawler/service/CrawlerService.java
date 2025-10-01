@@ -80,12 +80,7 @@ public class CrawlerService {
         webClient.setCache(cache);
         HtmlPage page = webClient.getPage(url);
 
-        val brazilianStock = BrazilianStock.builder()
-                .name(name)
-                .ticker(extractString(ticker, page.getBaseURL().getPath(), 1).toUpperCase())
-                .build();
-
-        return brazilianStock;
+        return new BrazilianStock(name, extractString(ticker, page.getBaseURL().getPath(), 1).toUpperCase());
     }
 
     private String extractString(String regex, String text, int groupIndex){
